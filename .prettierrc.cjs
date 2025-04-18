@@ -1,0 +1,17 @@
+module.exports = {
+    tabWidth: 4,
+    jsxSingleQuote: true,
+    printWidth: 100,
+    singleQuote: true,
+    semi: false,
+    overrides: [
+        {
+            files: '*.json',
+            options: {
+                printWidth: 200
+            }
+        }
+    ],
+    arrowParens: 'always',
+    trailingComma: 'none'
+}
