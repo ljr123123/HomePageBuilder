@@ -1,13 +1,13 @@
 from typing import Any, Literal
 
 import json
+import os
+import sys
 import time
 from pathlib import Path
 
 import requests
 from mcp.server.fastmcp import FastMCP
-
-from modules.itick_api import MarketType, Region, get_market_list, headers
 
 
 # region agent log helper
@@ -42,6 +42,47 @@ def _agent_log(
 
 
 # endregion agent log helper
+
+
+# region agent log: cloud-friendly import bootstrap
+def _bootstrap_sys_path() -> None:
+    """
+    Ensure repo root is on sys.path / PYTHONPATH.
+    Cloud runners may start this file with cwd != repo root, which breaks
+    imports like `modules.*`.
+    """
+
+    repo_root = Path(__file__).resolve().parent.parent
+    repo_root_str = str(repo_root)
+
+    if repo_root_str not in sys.path:
+        sys.path.insert(0, repo_root_str)
+
+    current = os.environ.get("PYTHONPATH", "")
+    if repo_root_str not in current.split(os.pathsep):
+        os.environ["PYTHONPATH"] = (
+            repo_root_str if not current else current + os.pathsep + repo_root_str
+        )
+
+    _agent_log(
+        run_id="cloud",
+        hypothesis_id="H-path",
+        location="MCP/itick_mcp.py:_bootstrap_sys_path",
+        message="bootstrapped sys.path for repo root",
+        data={
+            "repo_root": repo_root_str,
+            "cwd": os.getcwd(),
+            "sys_path_head": sys.path[:5],
+        },
+    )
+
+
+_bootstrap_sys_path()
+# endregion agent log: cloud-friendly import bootstrap
+
+
+# IMPORTANT: import after bootstrap
+from modules.itick_api import MarketType, Region, get_market_list, headers  # noqa: E402
 
 
 app = FastMCP("itick-api")
