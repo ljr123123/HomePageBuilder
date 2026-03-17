@@ -1,0 +1,31 @@
+---
+description: 项目规则（可自定义）
+alwaysApply: true
+---
+
+# 项目规则
+
+## 语言规范
+
+- 所有 rule、skill、command、subagent 均使用**中文**书写
+
+## 目录结构
+
+**务必严格执行，不得在根目录做冗余探索搜索。**
+
+- **papers**：项目根目录下的 `papers` 文件夹保存代码参考的文献内容，如有需要请直接查阅 `papers/`
+- **modules**：`modules` 文件夹保存共用代码库，分组件编写代码，最后在 `main.py` 中统一调用
+- **docs**：项目根目录下的 `docs` 文件夹保存与股票 API 相关的信息与说明文档
+
+## iTick API Key 约定
+
+- iTick 的 API Key 统一存放在项目根目录 `basic.txt` 中，格式为：`token: your_apikey`
+- 或通过环境变量 `ITICK_API_KEY` 提供，二者均可被数据加载模块自动识别
+
+## MCP 使用规范
+
+- GitHub 相关操作：使用 **GitHub MCP**
+
+## 子 Agent 使用规范
+
+- 当用户抱怨 agent 犯错、给出修正指令或指定偏好时，必须调用 `feedback-to-skill` 子 agent，记录并更新对应的 skill 以改进行为

@@ -1,0 +1,12 @@
+{
+  "name": "itick-api",
+  "command": "python",
+  "args": [
+    "-m",
+    "MCP.itick_mcp"
+  ],
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  }
+}
+
